@@ -74,13 +74,23 @@ module.exports = (
 {
 	width: 40px;
 	min-width: 40px;
-	padding: 10px 0;
+	/* padding-top/bottom are stamped at runtime from the editor's
+	   computed padding so row 1 of the gutter aligns with row 1 of
+	   the code; only horizontal padding is stylesheet-owned. */
+	padding: 0;
 	text-align: right;
 	background: var(--theme-color-background-secondary, #F5F5F5);
 	border-right: 1px solid var(--theme-color-border-default, #D0D0D0);
 	color: var(--theme-color-text-muted, #999);
 	font-size: 13px;
-	line-height: 1.5;
+	/* line-height, padding-top, padding-bottom, and font-family are
+	   intentionally NOT declared here.  PictSectionCode._syncGutterMetrics()
+	   copies them from the editor's computed styles at init and on every
+	   editor resize, so the gutter is guaranteed to track the editor.
+	   Declaring them in CSS would either be redundant (when matching) or
+	   actively wrong (when the editor's metrics diverge — e.g. theme scale
+	   changes the editor's font-size).  See codejar-linenumbers for the
+	   canonical version of this pattern. */
 	user-select: none;
 	pointer-events: none;
 	box-sizing: border-box;

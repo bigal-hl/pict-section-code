@@ -187,6 +187,42 @@ class PictSectionCode extends libPictViewClass
 			}, { passive: true });
 		}
 
+		// Sync gutter typographic metrics from the editor.  The gutter
+		// must use the editor's exact line-height (and matching padding)
+		// or rows drift apart cumulatively.  See _syncGutterMetrics().
+		this._syncGutterMetrics();
+
+		// Watch the editor for size changes (window resize affecting
+		// flex layout, container resize) and re-sync the gutter so it
+		// continues to track the editor.  ResizeObserver fires once per
+		// frame at most, so the cost is negligible.
+		if (this._lineNumbersElement && typeof (ResizeObserver) === 'function')
+		{
+			let tmpSelf = this;
+			this._editorResizeObserver = new ResizeObserver(function ()
+			{
+				tmpSelf._syncGutterMetrics();
+			});
+			this._editorResizeObserver.observe(tmpEditorElement);
+		}
+
+		// Watch for direct style/class mutations on the editor.  Theme
+		// providers that toggle scale by swapping a class on the editor,
+		// or host code that adjusts editor typography via inline styles,
+		// don't necessarily change the editor's box size — so the
+		// ResizeObserver above wouldn't see them.  MutationObserver on
+		// the attributes catches these cases.
+		if (this._lineNumbersElement && typeof (MutationObserver) === 'function')
+		{
+			let tmpSelf = this;
+			this._editorStyleObserver = new MutationObserver(function ()
+			{
+				tmpSelf._syncGutterMetrics();
+			});
+			this._editorStyleObserver.observe(tmpEditorElement,
+				{ attributes: true, attributeFilter: ['style', 'class'] });
+		}
+
 		// Handle read-only
 		if (this.options.ReadOnly)
 		{
@@ -249,6 +285,106 @@ class PictSectionCode extends libPictViewClass
 		}
 
 		this._lineNumbersElement.innerHTML = tmpHTML;
+
+		// Defense-in-depth: every line-count rebuild is also a natural
+		// re-sync point.  Cheap (one getComputedStyle + a handful of
+		// style writes) and guarantees newly-added spans use the same
+		// metrics as the editor at the moment of the rebuild.
+		this._syncGutterMetrics();
+	}
+
+	/**
+	 * Copy typographic metrics from the editor element to the line-numbers
+	 * gutter so every gutter row lines up with its corresponding code row.
+	 *
+	 * The gutter is a sibling element with its own font/line-height
+	 * declarations — if any one diverges from the editor (unitless
+	 * line-height resolving against a different font-size, host CSS
+	 * overriding font-family, theme scale changing the editor's metrics),
+	 * the two desync and the drift accumulates with every line.
+	 *
+	 * The pattern is borrowed from the canonical `codejar-linenumbers`
+	 * library (julianpoemp/codejar-linenumbers), which solves the same
+	 * class of bug by reading the editor's computed styles at init and
+	 * stamping them onto the gutter.  We extend that here by also
+	 * re-stamping whenever the editor resizes (see the ResizeObserver in
+	 * onAfterInitialRender), so theme scale changes self-heal too.
+	 *
+	 * Public callers can invoke {@link syncMetrics} to force a re-sync
+	 * after any external change that affects editor typography.
+	 */
+	_syncGutterMetrics()
+	{
+		if (!this._lineNumbersElement || !this._editorElement)
+		{
+			return;
+		}
+		if (typeof (window) === 'undefined' || typeof (window.getComputedStyle) !== 'function')
+		{
+			return;
+		}
+
+		let tmpEditorStyle = window.getComputedStyle(this._editorElement);
+		let tmpLineHeight = tmpEditorStyle.lineHeight;
+
+		// `normal` is the spec default — leave the gutter untouched so the
+		// stylesheet's declaration wins (we have no number to copy).
+		if (tmpLineHeight && tmpLineHeight !== 'normal')
+		{
+			this._lineNumbersElement.style.lineHeight = tmpLineHeight;
+		}
+
+		// Match the editor's vertical padding so row 1 of the gutter sits
+		// at the same y-offset as row 1 of the code.
+		if (tmpEditorStyle.paddingTop)
+		{
+			this._lineNumbersElement.style.paddingTop = tmpEditorStyle.paddingTop;
+		}
+		if (tmpEditorStyle.paddingBottom)
+		{
+			this._lineNumbersElement.style.paddingBottom = tmpEditorStyle.paddingBottom;
+		}
+
+		// Font-family must match so the visual baseline of the digits
+		// aligns with the code (different monospace fonts can have
+		// different x-heights even at identical line-heights).
+		if (tmpEditorStyle.fontFamily)
+		{
+			this._lineNumbersElement.style.fontFamily = tmpEditorStyle.fontFamily;
+		}
+
+		// Dev-time sanity check.  If the gutter's resolved row height
+		// disagrees with the editor's, alignment will drift cumulatively.
+		// Warn loudly so the regression is caught at the next reload
+		// instead of silently accumulating pixels per line.
+		if (typeof (console) !== 'undefined' && console.warn)
+		{
+			let tmpFirstSpan = this._lineNumbersElement.querySelector('span');
+			if (tmpFirstSpan)
+			{
+				let tmpGutterRow = tmpFirstSpan.getBoundingClientRect().height;
+				let tmpEditorRow = parseFloat(tmpLineHeight);
+				if (tmpGutterRow && tmpEditorRow && Math.abs(tmpGutterRow - tmpEditorRow) > 0.5)
+				{
+					console.warn('[pict-section-code] gutter/editor row-height mismatch: ' +
+						'gutter ' + tmpGutterRow + 'px vs editor ' + tmpEditorRow + 'px — ' +
+						'line numbers will drift. Check for CSS overriding ' +
+						'.pict-code-line-numbers line-height.');
+				}
+			}
+		}
+	}
+
+	/**
+	 * Public hook for hosts to force a gutter metrics re-sync after
+	 * external typography changes (theme scale, font-size swap, etc.).
+	 * The ResizeObserver attached at init handles most cases, but call
+	 * this from an app's post-theme-change hook for belt-and-suspenders
+	 * coverage.
+	 */
+	syncMetrics()
+	{
+		this._syncGutterMetrics();
 	}
 
 	/**
@@ -460,6 +596,16 @@ class PictSectionCode extends libPictViewClass
 	 */
 	destroy()
 	{
+		if (this._editorResizeObserver)
+		{
+			this._editorResizeObserver.disconnect();
+			this._editorResizeObserver = null;
+		}
+		if (this._editorStyleObserver)
+		{
+			this._editorStyleObserver.disconnect();
+			this._editorStyleObserver = null;
+		}
 		if (this.codeJar)
 		{
 			this.codeJar.destroy();
