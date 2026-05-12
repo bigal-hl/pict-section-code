@@ -165,6 +165,28 @@ class PictSectionCode extends libPictViewClass
 		// Initial line number render
 		this._updateLineNumbers();
 
+		// Sync line-numbers vertical position with the editor's scroll.
+		//
+		// The editor element scrolls internally (CodeJar uses
+		// contenteditable + overflow:auto for long content), but the
+		// line-numbers div is a sibling with overflow:visible — without
+		// this sync the line-numbers content stays glued at the top of
+		// the wrap while the editor scrolls underneath it, so "line 1"
+		// appears next to whatever line is actually showing.
+		//
+		// Using `transform: translateY(...)` instead of scrollTop keeps
+		// the sync compositor-only (no reflow per scroll event) and
+		// avoids needing to change the line-numbers element's overflow
+		// from visible.  Passive listener so we don't block scrolling.
+		if (this._lineNumbersElement)
+		{
+			let tmpLineNumbersEl = this._lineNumbersElement;
+			tmpEditorElement.addEventListener('scroll', function ()
+			{
+				tmpLineNumbersEl.style.transform = 'translateY(-' + tmpEditorElement.scrollTop + 'px)';
+			}, { passive: true });
+		}
+
 		// Handle read-only
 		if (this.options.ReadOnly)
 		{

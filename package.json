@@ -1,6 +1,6 @@
 {
     "name": "pict-section-code",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "description": "Pict code editor section wrapping CodeJar",
     "main": "source/Pict-Section-Code.js",
     "scripts": {
@@ -27,7 +27,7 @@
         "browser-env": "^3.3.0",
         "codejar": "^4.3.0",
         "pict": "^1.0.367",
-        "pict-docuserve": "^0.1.6",
+        "pict-docuserve": "^0.1.7",
         "quackage": "^1.2.3"
     },
     "mocha": {
