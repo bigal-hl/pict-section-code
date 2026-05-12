@@ -479,3 +479,20 @@ module.exports = PictSectionCode;
 
 module.exports.default_configuration = _DefaultConfiguration;
 module.exports.createHighlighter = libCreateHighlighter;
+
+// Demo bundle for pict-docuserve.  Host apps that embed docuserve and
+// want pict-section-code's demos visible in their docs site call
+// `require('pict-section-code').registerWithDocuserve(pict)` once at
+// app boot.  Silent no-op when Docuserve-Demos isn't installed.
+//
+// The require here is intentionally eager: browserify needs a static
+// `require()` at module-toplevel to trace and bundle the demos source.
+// The apparent circular dep (demos/index.js requires THIS module to
+// reach the PictSectionCode class) is benign — by the time demos/
+// index.js runs, `module.exports = PictSectionCode` has already
+// executed, so it sees a usable class.  The `.demos` and
+// `.registerWithDocuserve` attachments below run after the require
+// returns, so demos/index.js never observes them being undefined.
+const libCodeDemos = require('./demos');
+module.exports.demos                = libCodeDemos.demos;
+module.exports.registerWithDocuserve = libCodeDemos.registerWithDocuserve;
