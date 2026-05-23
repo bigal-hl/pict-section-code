@@ -14,3 +14,11 @@ Wrap CodeJar in a Pict view for editable code editors and read-only syntax-highl
 [API Reference](api.md)
 [Configuration](configuration.md)
 [GitHub](https://github.com/stevenvelozo/pict-section-code)
+
+<!-- docuserve:examples:start -->
+| Example | Complexity | Launch |
+|---------|------------|--------|
+| [Code Display](examples/code%5Fdisplay/README.md) | Basic | [&#9654; Launch](examples/code%5Fdisplay/index.html) |
+| [Code Editor](examples/code%5Feditor/README.md) | Intermediate | [&#9654; Launch](examples/code%5Feditor/index.html) |
+| [Multi-File Editor](examples/multi%5Ffile%5Feditor/README.md) | Advanced | [&#9654; Launch](examples/multi%5Ffile%5Feditor/index.html) |
+<!-- docuserve:examples:end -->

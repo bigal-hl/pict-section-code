@@ -26,5 +26,13 @@
 		"pict": "^1.0.348",
 		"pict-application": "^1.0.19",
 		"pict-view": "^1.0.66"
+	},
+	"retold": {
+		"ExampleApplication": {
+			"Stage": true,
+			"Title": "Code Display",
+			"Summary": "Five read-only syntax-highlighted code blocks rendered with one shared view subclass across every supported language.",
+			"Complexity": "Basic"
+		}
 	}
 }

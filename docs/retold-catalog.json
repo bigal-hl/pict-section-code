@@ -1,5 +1,5 @@
 {
-	"Generated": "2026-05-22T05:44:32.602Z",
+	"Generated": "2026-05-23T01:49:33.353Z",
 	"Mode": "module",
 	"GitHubOrg": "stevenvelozo",
 	"DefaultBranch": "master",
@@ -47,6 +47,18 @@
 					{
 						"Title": "Example Overview",
 						"Path": "examples.md"
+					},
+					{
+						"Title": "Code Display",
+						"Path": "examples/code_display/README.md"
+					},
+					{
+						"Title": "Code Editor",
+						"Path": "examples/code_editor/README.md"
+					},
+					{
+						"Title": "Multi-File Editor",
+						"Path": "examples/multi_file_editor/README.md"
 					}
 				]
 			},
@@ -55,23 +67,23 @@
 				"Children": [
 					{
 						"Title": "Pict",
-						"Path": "pict/pict/README.md"
+						"Path": "https://stevenvelozo.github.io/pict/README.md"
 					},
 					{
 						"Title": "Pict Application",
-						"Path": "pict/pict-application/README.md"
+						"Path": "https://stevenvelozo.github.io/pict-application/README.md"
 					},
 					{
 						"Title": "Pict View",
-						"Path": "pict/pict-view/README.md"
+						"Path": "https://stevenvelozo.github.io/pict-view/README.md"
 					},
 					{
 						"Title": "Fable",
-						"Path": "fable/fable/README.md"
+						"Path": "https://stevenvelozo.github.io/fable/README.md"
 					},
 					{
 						"Title": "Fable Service Base",
-						"Path": "fable/fable-serviceproviderbase/README.md"
+						"Path": "https://stevenvelozo.github.io/fable-serviceproviderbase/README.md"
 					}
 				]
 			}
@@ -85,6 +97,19 @@
 			"_version.json",
 			"api.md",
 			"configuration.md",
+			"examples/README.md",
+			"examples/code_display/README.md",
+			"examples/code_display/code_display_example.min.js",
+			"examples/code_display/codejar.js",
+			"examples/code_display/index.html",
+			"examples/code_editor/README.md",
+			"examples/code_editor/code_editor_example.min.js",
+			"examples/code_editor/codejar.js",
+			"examples/code_editor/index.html",
+			"examples/multi_file_editor/README.md",
+			"examples/multi_file_editor/codejar.js",
+			"examples/multi_file_editor/index.html",
+			"examples/multi_file_editor/multi_file_editor_example.min.js",
 			"examples.md",
 			"getting-started.md",
 			"highlighting.md",
