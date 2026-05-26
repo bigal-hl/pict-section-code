@@ -13,7 +13,7 @@ Wrap CodeJar in a Pict view for editable code editors and read-only syntax-highl
 [Quick Start](README.md)
 [API Reference](api.md)
 [Configuration](configuration.md)
-[GitHub](https://github.com/stevenvelozo/pict-section-code)
+[GitHub](https://github.com/fable-retold/pict-section-code)
 
 <!-- docuserve:examples:start -->
 | Example | Complexity | Launch |

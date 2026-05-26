@@ -67,23 +67,23 @@
 				"Children": [
 					{
 						"Title": "Pict",
-						"Path": "https://stevenvelozo.github.io/pict/README.md"
+						"Path": "https://fable-retold.github.io/pict/README.md"
 					},
 					{
 						"Title": "Pict Application",
-						"Path": "https://stevenvelozo.github.io/pict-application/README.md"
+						"Path": "https://fable-retold.github.io/pict-application/README.md"
 					},
 					{
 						"Title": "Pict View",
-						"Path": "https://stevenvelozo.github.io/pict-view/README.md"
+						"Path": "https://fable-retold.github.io/pict-view/README.md"
 					},
 					{
 						"Title": "Fable",
-						"Path": "https://stevenvelozo.github.io/fable/README.md"
+						"Path": "https://fable-retold.github.io/fable/README.md"
 					},
 					{
 						"Title": "Fable Service Base",
-						"Path": "https://stevenvelozo.github.io/fable-serviceproviderbase/README.md"
+						"Path": "https://fable-retold.github.io/fable-serviceproviderbase/README.md"
 					}
 				]
 			}

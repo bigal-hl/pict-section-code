@@ -1,8 +1,8 @@
 # pict-section-code
 
-> **[&#9654; Read the Pict-Section-Code Documentation](https://stevenvelozo.github.io/pict-section-code/)** &mdash; interactive docs with the full API reference.
+> **[&#9654; Read the Pict-Section-Code Documentation](https://fable-retold.github.io/pict-section-code/)** &mdash; interactive docs with the full API reference.
 
-A code editor and syntax highlighter view for the [Pict](https://github.com/stevenvelozo/pict) ecosystem, wrapping [CodeJar](https://github.com/antonmedv/codejar).
+A code editor and syntax highlighter view for the [Pict](https://github.com/fable-retold/pict) ecosystem, wrapping [CodeJar](https://github.com/antonmedv/codejar).
 
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
@@ -121,10 +121,10 @@ npm run coverage
 
 ## Related Packages
 
-- [pict](https://github.com/stevenvelozo/pict) -- Core MVC framework
-- [pict-view](https://github.com/stevenvelozo/pict-view) -- Base view class
-- [pict-application](https://github.com/stevenvelozo/pict-application) -- Application lifecycle
-- [fable](https://github.com/stevenvelozo/fable) -- Service provider and dependency injection
+- [pict](https://github.com/fable-retold/pict) -- Core MVC framework
+- [pict-view](https://github.com/fable-retold/pict-view) -- Base view class
+- [pict-application](https://github.com/fable-retold/pict-application) -- Application lifecycle
+- [fable](https://github.com/fable-retold/fable) -- Service provider and dependency injection
 
 ## License
 
