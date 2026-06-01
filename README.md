@@ -4,7 +4,7 @@
 
 A code editor and syntax highlighter view for the [Pict](https://github.com/fable-retold/pict) ecosystem, wrapping [CodeJar](https://github.com/antonmedv/codejar).
 
-[![MIT Licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[MIT License](LICENSE)
 
 ## Features
 
