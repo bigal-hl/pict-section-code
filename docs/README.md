@@ -113,7 +113,7 @@ See the full [Configuration Reference](configuration.md) for all options.
 
 ## Related Packages
 
-- [pict](https://github.com/fable-retold/pict) -- Core MVC framework
-- [pict-view](https://github.com/fable-retold/pict-view) -- Base view class
-- [pict-application](https://github.com/fable-retold/pict-application) -- Application lifecycle
-- [fable](https://github.com/fable-retold/fable) -- Service provider and dependency injection
+- [pict](https://fable-retold.github.io/pict/) -- Core MVC framework
+- [pict-view](https://fable-retold.github.io/pict-view/) -- Base view class
+- [pict-application](https://fable-retold.github.io/pict-application/) -- Application lifecycle
+- [fable](https://fable-retold.github.io/fable/) -- Service provider and dependency injection

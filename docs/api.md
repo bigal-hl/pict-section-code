@@ -229,4 +229,4 @@ PictSectionCode inherits all methods from `pict-view`, including:
 | `onBeforeRender()` | Hook before rendering |
 | `onAfterRender()` | Hook after rendering |
 
-See the [pict-view documentation](https://github.com/fable-retold/pict-view) for the full inherited API.
+See the [pict-view documentation](https://fable-retold.github.io/pict-view/) for the full inherited API.
