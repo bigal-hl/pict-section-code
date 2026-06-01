@@ -1,44 +1,44 @@
-# Code Editor — Single-File Editable Surface with AppData Binding
+# Code Editor - Single-File Editable Surface with AppData Binding
 
 <!-- docuserve:example-launch:start -->
-> **[&#9654; Launch the live app](examples/code%5Feditor/index.html)** — runs in your browser, opens in a new tab.
+> **[Launch the live app](examples/code%5Feditor/index.html)** - runs in your browser, opens in a new tab.
 <!-- docuserve:example-launch:end -->
 
 A minimal **editable** code editor that demonstrates the live half of
-`pict-section-code` — two-way data binding to a Pict address, runtime
+`pict-section-code` - two-way data binding to a Pict address, runtime
 language switching, on-demand read-only toggling, and a `getCode()`
 output panel. The application file is a single subclass and a single
 view configuration; the rest is the framework.
 
 This is the reference example for any feature that needs to capture
-code from the user — a snippet field on a form, a query editor in an
-admin panel, a configuration scratchpad — and surface the captured
+code from the user - a snippet field on a form, a query editor in an
+admin panel, a configuration scratchpad - and surface the captured
 text to the rest of the application.
 
 ## What it demonstrates
 
 | Capability | Where you see it |
 |------------|------------------|
-| Editable mode | No `ReadOnly` option set — defaults to `false`, `contenteditable="true"` |
-| `CodeDataAddress` two-way binding | `CodeDataAddress: "AppData.SourceCode"` — every keystroke writes back |
+| Editable mode | No `ReadOnly` option set - defaults to `false`, `contenteditable="true"` |
+| `CodeDataAddress` two-way binding | `CodeDataAddress: "AppData.SourceCode"` - every keystroke writes back |
 | `DefaultAppData` seeding | The application's `DefaultAppData.SourceCode` is the initial content |
 | `setLanguage()` at runtime | Language dropdown calls `_Pict.views.ExampleCodeEditorView.setLanguage(value)` |
 | `setReadOnly()` at runtime | Toolbar button flips edit-mode without re-instantiating the editor |
 | `getCode()` for snapshots | "Get Code" button reads the current content via `tmpView.getCode()` |
-| Line numbers on a live editor | `LineNumbers: true` — gutter tracks scroll, resize, and theme changes |
+| Line numbers on a live editor | `LineNumbers: true` - gutter tracks scroll, resize, and theme changes |
 | Bracket / brace auto-pairing | Defaults: `AddClosing: true`, `IndentOn: /[({[]$/`, `MoveToNewLine: /^[)}\]]/` |
-| Tab inside editor inserts a tab | `Tab: "\t"`, `CatchTab: true` — focus stays in the editor |
+| Tab inside editor inserts a tab | `Tab: "\t"`, `CatchTab: true` - focus stays in the editor |
 | Single-file content lifecycle | One `AppData` slot, one render, one editor instance |
 
 ## Key files
 
-- `CodeEditor-Example-Application.js` — the entire app: one subclass, one
+- `CodeEditor-Example-Application.js` - the entire app: one subclass, one
   view configuration, one `render()` call. The `DefaultAppData` carries
   the initial snippet so the editor opens with something to look at.
-- `html/index.html` — the editor's host page. Includes a language
+- `html/index.html` - the editor's host page. Includes a language
   dropdown, a "Get Code" button that snapshots the editor content into
   a panel, and a "Toggle Read-Only" button.
-- `html/codejar.js` — the IIFE-wrapped CodeJar build; `pict-section-code`
+- `html/codejar.js` - the IIFE-wrapped CodeJar build; `pict-section-code`
   finds it automatically at first render.
 
 ## The view configuration
@@ -63,11 +63,11 @@ Every other knob defaults to a sensible editing-friendly value.
 
 ---
 
-## Feature 1 — Two-way data binding via `CodeDataAddress`
+## Feature 1 - Two-way data binding via `CodeDataAddress`
 
 `CodeDataAddress` is the central feature of the editable mode. When it
 is set, the editor reads the address on init and writes back on every
-edit — no host code required.
+edit - no host code required.
 
 ### Read at startup
 
@@ -101,7 +101,7 @@ application's `DefaultAppData`:
 }
 ```
 
-…so the editor opens with that snippet already loaded.
+...so the editor opens with that snippet already loaded.
 
 ### Write on every keystroke
 
@@ -116,14 +116,14 @@ this.codeJar.onUpdate((pCode) =>
 });
 ```
 
-…and the default `onCodeChange()` writes back through the manifest:
+...and the default `onCodeChange()` writes back through the manifest:
 
 ```js
 onCodeChange(pCode)
 {
     if (this.options.CodeDataAddress)
     {
-        const tmpAddressSpace = { … };
+        const tmpAddressSpace = { ... };
         this.fable.manifest.setValueByHash(
             tmpAddressSpace, this.options.CodeDataAddress, pCode);
     }
@@ -133,10 +133,10 @@ onCodeChange(pCode)
 By the time the user has finished typing a character, `AppData.SourceCode`
 already holds the new value. Any other view or solver that reads from
 that address sees the change. Subclass `onCodeChange()` if you want to
-react to edits — validate, auto-save, fire a debounced server sync —
+react to edits - validate, auto-save, fire a debounced server sync -
 without losing the framework's write-through.
 
-## Feature 2 — Runtime language switching via `setLanguage()`
+## Feature 2 - Runtime language switching via `setLanguage()`
 
 The HTML toolbar exposes a `<select>` with five options. Its `onchange`
 handler routes through a tiny global function that calls the view's
@@ -174,14 +174,14 @@ setLanguage(pLanguage)
     if (this._editorElement)
     {
         this._editorElement.className = 'pict-code-editor language-' + pLanguage;
-        // …
+        // ...
     }
 
     if (this.codeJar)
     {
         let tmpCode = this.codeJar.toString();
         this.codeJar.destroy();
-        this.codeJar = this._codeJarPrototype(this._editorElement, this._highlightFunction, …);
+        this.codeJar = this._codeJarPrototype(this._editorElement, this._highlightFunction, ...);
         this._resetEditorWrapStyles();
         this.codeJar.updateCode(tmpCode);
         this.codeJar.onUpdate((pCode) => { this._updateLineNumbers(); this.onCodeChange(pCode); });
@@ -189,12 +189,12 @@ setLanguage(pLanguage)
 }
 ```
 
-The text content is preserved across the swap — only the colors change.
+The text content is preserved across the swap - only the colors change.
 That's deliberate: switching the language is something a user might do
 to compare highlighters or to handle a paste from a different syntax,
 not a destructive action.
 
-## Feature 3 — Runtime read-only toggle via `setReadOnly()`
+## Feature 3 - Runtime read-only toggle via `setReadOnly()`
 
 The "Toggle Read-Only" button flips between editable and locked:
 
@@ -223,12 +223,12 @@ setReadOnly(pReadOnly)
 }
 ```
 
-The CodeJar instance and the line-number gutter both keep working — only
+The CodeJar instance and the line-number gutter both keep working - only
 the browser's input handling changes. This is the same mechanism the
 Code Display example uses to render its five blocks as locked from the
 start; here we're using it dynamically.
 
-## Feature 4 — Reading the current content with `getCode()`
+## Feature 4 - Reading the current content with `getCode()`
 
 The "Get Code" button captures the editor's contents into a separate
 output panel:
@@ -262,16 +262,16 @@ getCode()
 ```
 
 Note that with the `CodeDataAddress` binding active, `AppData.SourceCode`
-is *already* equal to `getCode()` — the address is in sync with the
+is *already* equal to `getCode()` - the address is in sync with the
 editor at all times. `getCode()` is the right call when you want a
 snapshot string that doesn't depend on the host knowing the
 data-address convention; the address read is the right call when you
 already have a manifest in hand.
 
-## Feature 5 — Editor ergonomics: tabs, brackets, indent
+## Feature 5 - Editor ergonomics: tabs, brackets, indent
 
 `pict-section-code` ships with editor defaults that match how Retold
-itself is authored — tab character, auto-pair on `(`, `{`, `[`, and a
+itself is authored - tab character, auto-pair on `(`, `{`, `[`, and a
 hanging close-brace pattern:
 
 ```js
@@ -300,21 +300,21 @@ The example doesn't override any of them. Type `(` and the editor adds
 next line is indented with the same leading whitespace; press Tab and
 you get a literal tab character (not focus movement to the next
 control). Subclasses can use the `customConfigureEditorOptions(pOptions)`
-hook to mutate the options block right before CodeJar is built — that's
+hook to mutate the options block right before CodeJar is built - that's
 where you'd plug in two-space indent, or disable the tab capture, or
 turn off bracket auto-pairing for a Markdown editor.
 
-## Feature 6 — Aligned line-number gutter
+## Feature 6 - Aligned line-number gutter
 
 The editor in this example carries `LineNumbers: true`. The gutter
 ships with no `line-height`, `padding-top`, `padding-bottom`, or
-`font-family` declarations in CSS — those are stamped at runtime from
+`font-family` declarations in CSS - those are stamped at runtime from
 the editor's computed styles so they match exactly:
 
 ```js
 _syncGutterMetrics()
 {
-    // …
+    // ...
     let tmpEditorStyle = window.getComputedStyle(this._editorElement);
     let tmpLineHeight = tmpEditorStyle.lineHeight;
 
@@ -327,12 +327,12 @@ _syncGutterMetrics()
     {
         this._lineNumbersElement.style.paddingTop = tmpEditorStyle.paddingTop;
     }
-    // …
+    // ...
 }
 ```
 
 A `ResizeObserver` and a `MutationObserver` on the editor re-run the
-sync whenever the editor's size or attributes change — so swapping the
+sync whenever the editor's size or attributes change - so swapping the
 theme, adjusting the scale, or changing the font-family stays aligned
 without per-app code. Defense-in-depth: the gutter is also re-stamped
 every time the line-count changes (every keystroke that adds or
@@ -340,11 +340,11 @@ removes a newline), so newly added rows can never start at the wrong
 metrics.
 
 When the gutter scrolls with the code, it's via a single
-`transform: translateY(…)` on the gutter element synced to the
-editor's `scrollTop` — compositor-only, no per-frame reflow, attached
+`transform: translateY(...)` on the gutter element synced to the
+editor's `scrollTop` - compositor-only, no per-frame reflow, attached
 as a `{ passive: true }` listener.
 
-## Feature 7 — The minimal application shape
+## Feature 7 - The minimal application shape
 
 The application class is six methods of plumbing:
 
@@ -396,24 +396,24 @@ Code" and the current contents appear in the panel below.
 
 ## Things to try in the running app
 
-- **Type and watch the address** — open devtools, paste
+- **Type and watch the address** - open devtools, paste
   `_Pict.AppData.SourceCode` after every keystroke. It tracks live.
-- **Switch languages** — pick `json` from the dropdown. The existing
+- **Switch languages** - pick `json` from the dropdown. The existing
   JavaScript is now highlighted by the JSON rules (mostly strings get
   recoloured); the content is untouched.
-- **Toggle read-only** — click the button, try to type. The browser
+- **Toggle read-only** - click the button, try to type. The browser
   refuses input but selection and copy still work. Click again to
   resume editing.
-- **Press Tab** — focus stays inside the editor and a tab character
+- **Press Tab** - focus stays inside the editor and a tab character
   is inserted. Press it with a selection and the selection indents.
-- **Press `(`** — the editor auto-inserts `)` and parks the caret
+- **Press `(`** - the editor auto-inserts `)` and parks the caret
   between them.
-- **Press Enter after `{`** — the new line is indented to match the
+- **Press Enter after `{`** - the new line is indented to match the
   brace's leading whitespace, plus one tab.
-- **Resize the window** — the gutter rows stay perfectly aligned with
+- **Resize the window** - the gutter rows stay perfectly aligned with
   the code rows; the ResizeObserver re-stamps the metrics whenever
   the editor's box changes.
-- **Inspect `_Pict`** — `_Pict.views.ExampleCodeEditorView.codeJar` is
+- **Inspect `_Pict`** - `_Pict.views.ExampleCodeEditorView.codeJar` is
   the live CodeJar instance;
   `_Pict.views.ExampleCodeEditorView.options.ReadOnly` reflects the
   current toggle state.
@@ -421,7 +421,7 @@ Code" and the current contents appear in the panel below.
 ## Takeaways
 
 1. **`CodeDataAddress` is the binding contract.** Set it, and the
-   editor reads from and writes to that AppData slot automatically —
+   editor reads from and writes to that AppData slot automatically -
    no per-app marshal code, no event wiring.
 2. **`setLanguage()` and `setReadOnly()` are runtime mode changes,
    not re-instantiations from the host's perspective.** The view
@@ -431,17 +431,17 @@ Code" and the current contents appear in the panel below.
    doesn't want to know about `AppData` paths, `view.getCode()` is
    the framework-agnostic way to read the current content.
 4. **Editor ergonomics come from configuration, not subclassing.**
-   Tab character, auto-pair, indent regex, close-brace placement —
+   Tab character, auto-pair, indent regex, close-brace placement -
    all properties on the view config, all defaulted sensibly, all
    overridable per instance without writing a custom class.
 5. **The gutter stays aligned by construction.** The line-numbers
    element ships without metrics in CSS so it can never drift from
-   the editor — the framework stamps them at init and re-stamps on
+   the editor - the framework stamps them at init and re-stamps on
    every editor change.
 
 ## Related documentation
 
-- [Getting Started](../../getting-started.md) — the editor walkthrough
-- [Configuration](../../configuration.md) — `CodeDataAddress`, `Language`, `Tab`, `AddClosing`, `IndentOn`, `MoveToNewLine`
-- [API Reference](../../api.md) — `getCode`, `setCode`, `setLanguage`, `setReadOnly`, `onCodeChange`, `customConfigureEditorOptions`
-- [Syntax Highlighting](../../highlighting.md) — supported languages and custom highlighter integration
+- [Getting Started](../../getting-started.md) - the editor walkthrough
+- [Configuration](../../configuration.md) - `CodeDataAddress`, `Language`, `Tab`, `AddClosing`, `IndentOn`, `MoveToNewLine`
+- [API Reference](../../api.md) - `getCode`, `setCode`, `setLanguage`, `setReadOnly`, `onCodeChange`, `customConfigureEditorOptions`
+- [Syntax Highlighting](../../highlighting.md) - supported languages and custom highlighter integration

@@ -1,17 +1,17 @@
-# Multi-File Editor — Sidebar-Tabbed Workspace on One Editor Instance
+# Multi-File Editor - Sidebar-Tabbed Workspace on One Editor Instance
 
 <!-- docuserve:example-launch:start -->
-> **[&#9654; Launch the live app](examples/multi%5Ffile%5Feditor/index.html)** — runs in your browser, opens in a new tab.
+> **[Launch the live app](examples/multi%5Ffile%5Feditor/index.html)** - runs in your browser, opens in a new tab.
 <!-- docuserve:example-launch:end -->
 
 A working multi-file code workspace: a left-rail file sidebar, a current-file
 toolbar with a language badge, and a single `PictSectionCode` editor that
 swaps between files. Adding a file, deleting one, renaming the active file's
-language by extension — all without a per-file editor instance, all driven
+language by extension - all without a per-file editor instance, all driven
 by one `AppData.Files` map and one shared view.
 
 This is the reference example for any feature that needs **multiple
-documents on one editor** — a snippet library, a small in-app IDE, a query
+documents on one editor** - a snippet library, a small in-app IDE, a query
 manager, a configuration multi-pane. The pattern: keep the editor singleton,
 keep documents in `AppData`, and use the framework's `setCode()` /
 `setLanguage()` / `getCode()` to move content in and out of the singleton on
@@ -34,14 +34,14 @@ selection.
 
 ## Key files
 
-- `MultiFileEditor-Example-Application.js` — the application: one
+- `MultiFileEditor-Example-Application.js` - the application: one
   view configuration, plus the workspace logic (`loadFile`,
   `saveCurrentFile`, `createNewFile`, `deleteFile`, `renderSidebar`,
   `updateToolbar`, `updateSidebarActiveState`, `detectLanguage`).
-- `html/index.html` — sidebar markup (`#FileSidebarList`, a "+ New"
+- `html/index.html` - sidebar markup (`#FileSidebarList`, a "+ New"
   button), editor toolbar (`#CurrentFileName`, `#LanguageBadge`,
   a Save button), and the `#EditorContainer` target.
-- `html/codejar.js` — the IIFE-wrapped CodeJar build; the editor
+- `html/codejar.js` - the IIFE-wrapped CodeJar build; the editor
   view finds it on first render.
 
 ## The data model
@@ -66,12 +66,12 @@ The seed lives entirely in `DefaultAppData`:
 
 Three top-level slots:
 
-- `AppData.Files` — the workspace map, keyed by filename. Each entry is
+- `AppData.Files` - the workspace map, keyed by filename. Each entry is
   `{ Name, Content }`. The Name is preserved for display (it could
   diverge from the key in a future rename feature; today they always
   match).
-- `AppData.CurrentFile` — the filename of the currently open document.
-- `AppData.CurrentFileContent` — the slot the editor view's
+- `AppData.CurrentFile` - the filename of the currently open document.
+- `AppData.CurrentFileContent` - the slot the editor view's
   `CodeDataAddress` points at. The application moves content in and
   out of this slot as the user switches files.
 
@@ -98,7 +98,7 @@ initial highlighter, swapped at every file switch.
 
 ---
 
-## Feature 1 — One editor, many documents
+## Feature 1 - One editor, many documents
 
 The application registers a single `EditorView`:
 
@@ -107,7 +107,7 @@ this.pict.addView('EditorView', _EditorViewConfig, ExampleMultiFileEditorView);
 ```
 
 There is never a second editor. Every file in `AppData.Files` is
-edited *through* the singleton — `loadFile()` and `saveCurrentFile()`
+edited *through* the singleton - `loadFile()` and `saveCurrentFile()`
 move text in and out:
 
 ```js
@@ -145,12 +145,12 @@ loadFile(pFileKey)
 }
 ```
 
-The flow is symmetric — every switch saves, every save updates the
+The flow is symmetric - every switch saves, every save updates the
 map, every load updates the editor. The framework's
 `setCode()` / `setLanguage()` are the only editor-touching calls;
 everything else is host-managed state under `AppData`.
 
-## Feature 2 — Save-on-switch
+## Feature 2 - Save-on-switch
 
 `loadFile()`'s first real act is to call `saveCurrentFile()`:
 
@@ -202,13 +202,13 @@ In a real application this is where you'd also push to a server, write
 to localStorage, or fire any other persistence step. The in-memory
 write is the foundation; the rest layers on.
 
-## Feature 3 — The `_fileLoaded` guard
+## Feature 3 - The `_fileLoaded` guard
 
 There is a subtle bootstrap problem: `saveCurrentFile()` reads
 `tmpView.getCode()` and writes it back into
 `AppData.Files[AppData.CurrentFile].Content`. On the very first call to
-`loadFile()` — which happens at `onAfterInitialize()` for the seed file
-— the editor doesn't yet contain the file's content, because we're
+`loadFile()` - which happens at `onAfterInitialize()` for the seed file
+- the editor doesn't yet contain the file's content, because we're
 about to load it. If `saveCurrentFile()` ran unguarded, it would
 overwrite `app.js`'s seed content with whatever the editor was
 initialized with (typically empty).
@@ -239,12 +239,12 @@ the flag is false; `loadFile()` sets it true after the first successful
 load. From the second `loadFile()` call onward, save-on-switch runs
 normally.
 
-This pattern — "the first load is special" — is broadly applicable to
+This pattern - "the first load is special" - is broadly applicable to
 any singleton-view-many-document workspace. Without the flag, the seed
 state of the workspace is irreversibly clobbered the moment the user
 opens any other file.
 
-## Feature 4 — Filename-driven language detection
+## Feature 4 - Filename-driven language detection
 
 The sidebar shows files by name; the editor needs to know which
 highlighter to use. `detectLanguage()` maps extensions to the
@@ -275,7 +275,7 @@ detectLanguage(pFilename)
 
 The five branches mirror the five entries in
 `Pict-Code-Highlighter.js`'s `_LanguageDefinitions` map plus the
-built-in aliases (`js` → `javascript`, `htm` → `html`). Adding support
+built-in aliases (`js` -> `javascript`, `htm` -> `html`). Adding support
 for a new highlighter language would add one branch here and one entry
 to the highlighter definitions; nothing else changes.
 
@@ -285,7 +285,7 @@ CodeJar instance with the new highlight function (the existing code is
 preserved across the swap; in our case we then call `setCode()` with
 the loaded file's content immediately after).
 
-## Feature 5 — New-file workflow with per-language seeds
+## Feature 5 - New-file workflow with per-language seeds
 
 The sidebar's "+ New" button prompts for a filename and calls
 `createNewFile()`:
@@ -359,7 +359,7 @@ opens with an empty object; a `.css` file gets the comment-style
 sidebar re-renders and `loadFile()` is called so the editor opens
 on the new file.
 
-## Feature 6 — Delete-file workflow with active-file fallback
+## Feature 6 - Delete-file workflow with active-file fallback
 
 ```js
 deleteFile(pFileKey)
@@ -396,14 +396,14 @@ deleteFile(pFileKey)
 
 Three branches:
 
-1. The deleted file is not the active one — just re-render the
+1. The deleted file is not the active one - just re-render the
    sidebar so the entry disappears.
-2. The deleted file is the active one *and* others remain — load the
+2. The deleted file is the active one *and* others remain - load the
    first remaining filename. The save-on-switch in `loadFile()` is a
    no-op here because the file we'd save *to* no longer exists, but
    the `_fileLoaded` flag is already true, so we'd write into a
-   freshly-`delete`d key — harmless in JavaScript but worth noting.
-3. The deleted file is the last one — clear the editor, blank the
+   freshly-`delete`d key - harmless in JavaScript but worth noting.
+3. The deleted file is the last one - clear the editor, blank the
    toolbar, and leave `CurrentFile` empty until the user creates
    another via "+ New".
 
@@ -415,7 +415,7 @@ event propagation so it doesn't also fire the entry's `onclick`
 tmpHTML += '<button class="file-delete" onclick="event.stopPropagation(); deleteFile(\'' + tmpKey.replace(/'/g, "\\'") + '\')" title="Delete">&times;</button>';
 ```
 
-## Feature 7 — The sidebar render loop
+## Feature 7 - The sidebar render loop
 
 `renderSidebar()` rebuilds the file list from `AppData.Files` every
 time anything changes (file added, file removed, file activated):
@@ -450,11 +450,11 @@ renderSidebar()
 ```
 
 Single source of truth: `AppData.Files`. The rendered HTML is a
-function of the map. Active-state is computed from `CurrentFile` — no
+function of the map. Active-state is computed from `CurrentFile` - no
 `active` class lives in HTML between renders; it's re-stamped on every
 pass.
 
-Note the inline `onclick` handlers — they route through the
+Note the inline `onclick` handlers - they route through the
 top-level `loadFile(pKey)` and `deleteFile(pKey)` shims in the HTML,
 which in turn call into `_Pict.PictApplication`. This is the right
 shape for HTML that lives outside the framework's template engine:
@@ -464,7 +464,7 @@ in a Pict template registered on a view, but for an example app
 that's structured around vanilla HTML the inline route is the
 cleanest.
 
-## Feature 8 — Toolbar reflecting the active file
+## Feature 8 - Toolbar reflecting the active file
 
 `updateToolbar()` writes the current filename and language into the
 toolbar header at the top of the editor pane:
@@ -497,7 +497,7 @@ The HTML:
 </div>
 ```
 
-The badge styling colour-matches the active file's chrome — the
+The badge styling colour-matches the active file's chrome - the
 language identifier is the same string that drove the highlighter,
 so the user sees `javascript` / `json` / `html` / `css` / `sql`
 flip in lockstep with the highlighter colors below.
@@ -512,37 +512,37 @@ npm run build
 # (or `cd dist && python3 -m http.server 8000` and visit localhost:8000)
 ```
 
-The workspace opens with five seed files in the sidebar — `app.js`
+The workspace opens with five seed files in the sidebar - `app.js`
 selected. Click another to switch; type to edit; click "+ New" to
 add; click the × on any sidebar entry to delete.
 
 ## Things to try in the running app
 
-- **Switch files** — click `config.json`, type, switch to `styles.css`,
+- **Switch files** - click `config.json`, type, switch to `styles.css`,
   switch back. The JSON edits persist; the language badge and the
   syntax colors changed across each switch.
-- **Inspect `AppData`** — open devtools and look at
+- **Inspect `AppData`** - open devtools and look at
   `_Pict.AppData.Files['config.json'].Content` after editing. The
   content is up to date because the save-on-switch ran when you
   moved away.
-- **Create a new file** — click "+ New", enter `notes.md`. The
+- **Create a new file** - click "+ New", enter `notes.md`. The
   extension isn't in the language map, so the editor uses
   `javascript` as a fallback. Enter `utils.js` instead and watch the
   language badge flip to `javascript`.
-- **Create a JSON file** — `data.json` opens with `{ }` seeded;
+- **Create a JSON file** - `data.json` opens with `{ }` seeded;
   start filling in keys, switch away, switch back. State persists.
-- **Delete the active file** — click × on `app.js`. The first
+- **Delete the active file** - click × on `app.js`. The first
   remaining file is loaded; the editor shows its content; the
   toolbar updates.
-- **Delete the last file** — keep clicking × until the sidebar is
+- **Delete the last file** - keep clicking × until the sidebar is
   empty. The editor blanks; the toolbar reads "No file selected"; the
   language badge clears.
-- **Save explicitly** — open the toolbar Save button. With the
+- **Save explicitly** - open the toolbar Save button. With the
   `_fileLoaded` flag true, the current editor content is flushed
   into `AppData.Files[CurrentFile].Content`. Reload the page (the
-  in-memory state is lost — for persistence to localStorage or a
+  in-memory state is lost - for persistence to localStorage or a
   server, this is where you'd add the write).
-- **Bracket pairing across languages** — start a fresh `.json` file,
+- **Bracket pairing across languages** - start a fresh `.json` file,
   type `{` and Enter. The auto-pair + indent-on-open-brace defaults
   apply across every language because they're CodeJar-level options,
   not language-specific.
@@ -561,19 +561,19 @@ add; click the × on any sidebar entry to delete.
    pattern that prevents the seed state from being clobbered by an
    empty editor on bootstrap. Singleton-view-many-documents always
    needs some version of this flag.
-4. **Filename → language is a lookup.** `detectLanguage()` is a
+4. **Filename -> language is a lookup.** `detectLanguage()` is a
    trivial switch statement; combine it with the editor view's
    `setLanguage()` and you get per-file highlighting without any
    per-file editor configuration.
 5. **The framework's editor API stays small.** `setCode()`,
-   `setLanguage()`, `getCode()`, `setReadOnly()` — that's the entire
+   `setLanguage()`, `getCode()`, `setReadOnly()` - that's the entire
    surface needed to host a multi-document workspace. The view
    doesn't know about files; it knows about strings and a language
    identifier.
 
 ## Related documentation
 
-- [Getting Started](../../getting-started.md) — single-view setup that this example extends
-- [Configuration](../../configuration.md) — `CodeDataAddress`, `Language`, `LineNumbers`
-- [API Reference](../../api.md) — `setCode`, `setLanguage`, `getCode`, `setReadOnly`, `onCodeChange`
-- [Syntax Highlighting](../../highlighting.md) — supported language identifiers used by `detectLanguage()`
+- [Getting Started](../../getting-started.md) - single-view setup that this example extends
+- [Configuration](../../configuration.md) - `CodeDataAddress`, `Language`, `LineNumbers`
+- [API Reference](../../api.md) - `setCode`, `setLanguage`, `getCode`, `setReadOnly`, `onCodeChange`
+- [Syntax Highlighting](../../highlighting.md) - supported language identifiers used by `detectLanguage()`

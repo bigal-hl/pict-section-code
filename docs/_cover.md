@@ -18,7 +18,7 @@ Wrap CodeJar in a Pict view for editable code editors and read-only syntax-highl
 <!-- docuserve:examples:start -->
 | Example | Complexity | Launch |
 |---------|------------|--------|
-| [Code Display](examples/code%5Fdisplay/README.md) | Basic | [&#9654; Launch](examples/code%5Fdisplay/index.html) |
-| [Code Editor](examples/code%5Feditor/README.md) | Intermediate | [&#9654; Launch](examples/code%5Feditor/index.html) |
-| [Multi-File Editor](examples/multi%5Ffile%5Feditor/README.md) | Advanced | [&#9654; Launch](examples/multi%5Ffile%5Feditor/index.html) |
+| [Code Display](examples/code%5Fdisplay/README.md) | Basic | [Launch](examples/code%5Fdisplay/index.html) |
+| [Code Editor](examples/code%5Feditor/README.md) | Intermediate | [Launch](examples/code%5Feditor/index.html) |
+| [Multi-File Editor](examples/multi%5Ffile%5Feditor/README.md) | Advanced | [Launch](examples/multi%5Ffile%5Feditor/index.html) |
 <!-- docuserve:examples:end -->

@@ -1,6 +1,6 @@
 # pict-section-code
 
-> **[&#9654; Read the Pict-Section-Code Documentation](https://fable-retold.github.io/pict-section-code/)** &mdash; interactive docs with the full API reference.
+> **[Read the Pict-Section-Code Documentation](https://fable-retold.github.io/pict-section-code/)** - interactive docs with the full API reference.
 
 A code editor and syntax highlighter view for the [Pict](https://github.com/fable-retold/pict) ecosystem, wrapping [CodeJar](https://github.com/antonmedv/codejar).
 
